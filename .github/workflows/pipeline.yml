@@ -30,11 +30,15 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         
-      - name: Manual Approval
+      - name: Confirm Apply
         run: |
           if [ "$GITHUB_EVENT_NAME" == "push" ]; then
-            echo "Manually approve the deployment on the GitHub Actions UI"
-            exit 1
+            echo "Do you want to apply changes? (yes/no)"
+            read confirmation
+            if [ "$confirmation" != "yes" ]; then
+              echo "Terraform apply aborted."
+              exit 1
+            fi
           fi
 
       - name: Terraform Apply
