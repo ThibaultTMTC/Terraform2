@@ -29,3 +29,11 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
+
+      - name: Manual Approval
+        if: github.event_name == 'push'
+        run: echo "Validé manuellement"
+
+      - name: Terraform Apply
+        run: terraform apply
+        when: Manual Approval
