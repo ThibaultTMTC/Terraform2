@@ -1,0 +1,32 @@
+stages:
+  - init_validate
+  - plan
+  - apply
+
+variables:
+  TF_VERSION: "0.14.7" 
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y unzip
+  - wget https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+  - unzip terraform_${TF_VERSION}_linux_amd64.zip
+  - mv terraform /usr/local/bin/
+  - chmod +x /usr/local/bin/terraform
+
+init_validate:
+  stage: init_validate
+  script:
+    - terraform init
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=tfplan
+
+apply:
+  stage: apply
+  script:
+    - terraform apply "tfplan"
+  when: manual
