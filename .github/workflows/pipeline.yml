@@ -36,4 +36,4 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply
-        when: Manual Approval
+          when: manual
